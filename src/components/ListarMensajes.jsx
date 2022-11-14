@@ -15,7 +15,7 @@ const ListarMensajes = () => {
     const [p,setP] = useState(0)
     const [alerta,setAlerta] = useState(false)
     const [delayBtn,setDelayBtn] = useState(false)
-    const {mensajes,chat,submitMensajes} = useChat()
+    const {mensajes,chat,submitMensajes,setMensajes} = useChat()
     const {perfil} = useUsuario()
     const amigo = chat?.participantes?.filter(participante => participante?._id !== perfil?._id)[0]
     const navigate = useNavigate()
@@ -46,6 +46,8 @@ const ListarMensajes = () => {
                 }
                 if(chat._id){
                     const {data} = await clienteAxios.post(`/chat/${chat?._id}`,{mensaje},config)
+                    let mensajesActualizados = [...mensajes,data]
+                    setMensajes(mensajesActualizados)
                     socket.emit("enviar mensaje",{chat:chat._id,mensaje:data})
                     setMensaje("")
                     setAlerta(false)
