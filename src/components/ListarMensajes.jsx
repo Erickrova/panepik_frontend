@@ -73,11 +73,11 @@ const ListarMensajes = () => {
       }
         
     }
-    // useEffect(()=>{
-    // },[mensajes])
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
         socket.emit("abrir chat",chat._id)
+    },[mensajes,chat])
+    useEffect(()=>{
         socket.on("enviando mensaje",data =>{
             submitMensajes(data)
         })   

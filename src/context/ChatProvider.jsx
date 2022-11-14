@@ -47,9 +47,9 @@ const ChatProvider = ({children}) =>{
           }
     }
 
-    const submitMensajes = mensaje =>{
-        setMensajes([...mensajes,mensaje])
-        setTimeout(()=>{
+    const submitMensajes = async mensaje =>{
+        await obtenerMensajes(chat._id)
+        // setMensajes([...mensajes,mensaje])
             const scrol = document.querySelector("#bajarscroll")
             const hasta = document.querySelector("#bajar")
             function getOffset( el ) {
@@ -64,7 +64,6 @@ const ChatProvider = ({children}) =>{
           if(((scrol.scrollTop * 100)/scrol.scrollHeight) > 96){
             scrol.scrollTop = y 
           }
-        },100)
     }
 
     return(
