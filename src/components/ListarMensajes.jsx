@@ -15,7 +15,7 @@ const ListarMensajes = () => {
     const [p,setP] = useState(0)
     const [alerta,setAlerta] = useState(false)
     const [delayBtn,setDelayBtn] = useState(false)
-    const {mensajes,chat,submitMensajes} = useChat()
+    const {mensajes,chat,submitMensajes,setMensajes} = useChat()
     const {perfil} = useUsuario()
     const amigo = chat?.participantes?.filter(participante => participante?._id !== perfil?._id)[0]
     const navigate = useNavigate()
@@ -49,6 +49,7 @@ const ListarMensajes = () => {
                     setMensaje("")
                     setAlerta(false)
                     socket.emit("enviar mensaje",{chat:chat._id,mensaje:data})
+                    setMensajes([...mensajes,data])
                     setDelayBtn(false)
                 }
             } catch (error) {
@@ -81,7 +82,7 @@ const ListarMensajes = () => {
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
         socket.on("enviando mensaje",data =>{
-            submitMensajes(data)
+            setMensajes([...mensajes,data])
         })   
     })
     useEffect(()=>{
