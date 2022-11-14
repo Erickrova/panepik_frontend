@@ -3,7 +3,7 @@ import ListarMensajes from "../components/ListarMensajes";
 
 const Chat = () => {
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex flex-col  md:flex-row h-full md:overflow-hidden">
       <ListadoChats />
       <ListarMensajes />
     </div>

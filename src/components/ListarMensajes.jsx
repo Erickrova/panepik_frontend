@@ -12,6 +12,7 @@ let socket;
 const ListarMensajes = () => {
 
     const [mensaje,setMensaje] = useState("")
+    const [p,setP] = useState(0)
     const [alerta,setAlerta] = useState(false)
     const [delayBtn,setDelayBtn] = useState(false)
     const {mensajes,chat,submitMensajes} = useChat()
@@ -24,7 +25,6 @@ const ListarMensajes = () => {
     }
 
     const enviarMensaje = async () =>{
-      
         if(![mensaje].includes("")){
             setDelayBtn(true)
             if(mensaje.length > 700){
@@ -68,16 +68,18 @@ const ListarMensajes = () => {
         return { top: _y};
       }
       let y = getOffset( hasta ).top;
-      if(y){
-          scrol.scrollTop = y 
-      }
+        if(y && p === 0){
+            scrol.scrollTop = y 
+            setP(1)
+        }else{
+            if(y && ((scrol.scrollTop * 100)/scrol.scrollHeight) > 94){
+                scrol.scrollTop = y 
+            }
+        }
         
     }
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
-        socket.emit("abrir chat",chat._id)
-    },[mensajes,chat])
-    useEffect(()=>{
         socket.on("enviando mensaje",data =>{
             submitMensajes(data)
         })   
@@ -85,9 +87,15 @@ const ListarMensajes = () => {
             handleAbajo()
         })
     })
+    useEffect(()=>{
+        socket.emit("abrir chat",chat._id)
+    },[mensajes])
+    useEffect(()=>{
+        setP(0)
+    },[chat._id])
    
   return (
-     <div className="w-2/3 flex flex-col h-full relative  bg-slate-700">
+     <div className="md:w-2/3 flex flex-col h-full relative  bg-slate-700">
      <div className="w-full flex justify-between p-2 items-center">
          <button
             type='button'
@@ -99,11 +107,11 @@ const ListarMensajes = () => {
     {chat?._id ? (
         <>
         <Mensajes mensajes={mensajes} />
-        <div className="h-30 p-4 bg-slate-700 flex gap-2 items-center justify-center w-full" >
+        <div className="h-30 p-4 bg-slate-700 flex flex-col md:flex-row gap-2 items-center justify-center w-full" >
             <textarea 
             value={mensaje}
             onChange={e => setMensaje(e.target.value)}
-            className='bg-gray-200 p-2 rounded-md w-96 h-30 resize-none'
+            className='bg-gray-200 p-2 rounded-md w-full md:w-2/3 h-30 resize-none'
             placeholder='Tu mensaje aqui' />
             <p className={`${alerta ? "text-red-500" : "text-gray-200"}`}>{mensaje.length}/700</p>
             <button

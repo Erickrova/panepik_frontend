@@ -32,7 +32,7 @@ const ListadoChats = () => {
         obtenerChats()
     },[perfil])
   return (
-    <div className=" bg-white relative w-1/3 min-w-fit h-full flex flex-col">
+    <div className=" bg-white relative md:w-1/3 h-full flex flex-col">
     <div className="absolute top-0 bg-gray-50 shadow-md w-full flex justify-center p-2">
         <BuscadorChat chats={chats} />
     </div>

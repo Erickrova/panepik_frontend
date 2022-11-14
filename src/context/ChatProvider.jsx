@@ -48,22 +48,24 @@ const ChatProvider = ({children}) =>{
     }
 
     const submitMensajes = async mensaje =>{
-        await obtenerMensajes(chat._id)
-        // setMensajes([...mensajes,mensaje])
-            const scrol = document.querySelector("#bajarscroll")
-            const hasta = document.querySelector("#bajar")
-            function getOffset( el ) {
-            let _y = 0;
-            while( el && !isNaN( el.offsetTop ) ) {
-                    _y += el.offsetTop - el.scrollTop;
-                    el = el.offsetParent;
-            }
-            return { top: _y};
-          }
-          let y = getOffset( hasta ).top;
-          if(((scrol.scrollTop * 100)/scrol.scrollHeight) > 96){
-            scrol.scrollTop = y 
-          }
+        const mensajesState = [...mensajes]
+        const mensajesActualizados = [...mensajesState,mensaje]
+        setMensajes(mensajesActualizados)
+        //     const scrol = document.querySelector("#bajarscroll")
+        //     const hasta = document.querySelector("#bajar")
+        //     function getOffset( el ) {
+        //     let _y = 0;
+        //     while( el && !isNaN( el.offsetTop ) ) {
+        //             _y += el.offsetTop - el.scrollTop;
+        //             el = el.offsetParent;
+        //     }
+        //     return { top: _y};
+        //   }
+        //   let y = getOffset( hasta ).top;
+        //   console.log((scrol.scrollTop * 100)/scrol.scrollHeight)
+        //   if(((scrol.scrollTop * 100)/scrol.scrollHeight) > 90){
+        //     scrol.scrollTop = y 
+        //   }
     }
 
     return(
