@@ -83,12 +83,12 @@ const ListarMensajes = () => {
         socket.on("enviando mensaje",data =>{
             submitMensajes(data)
         })   
-        socket.on("conectado a sala",()=>{
-            handleAbajo()
-        })
     })
     useEffect(()=>{
         socket.emit("abrir chat",chat._id)
+        socket.on("conectado a sala",()=>{
+            handleAbajo()
+        })
     },[mensajes])
     useEffect(()=>{
         setP(0)
