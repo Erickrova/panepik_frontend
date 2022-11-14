@@ -49,7 +49,7 @@ const ChatProvider = ({children}) =>{
 
     const submitMensajes = async mensaje =>{
         const mensajesActualizados = [...mensajes]
-        mensajesActualizados = [...mensajesState,mensaje]
+        mensajesActualizados = [...mensajesActualizados,mensaje]
         setMensajes(mensajesActualizados)
     }
 
