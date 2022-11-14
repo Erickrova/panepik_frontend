@@ -118,7 +118,7 @@ const ListarMensajes = () => {
                 id='btnEnviar'
                 onClick={!delayBtn ? enviarMensaje : null}
                 type='button'
-                className='px-2 py-1 bg-sky-500 hover:bg-sky-600 text-white font-bold text-xl rounded-full'
+                className='px-2 py-1 bg-sky-500 hover:bg-sky-600 text-white font-bold text-xl w-full rounded-md'
                 >
                 Enviar
             </button>
