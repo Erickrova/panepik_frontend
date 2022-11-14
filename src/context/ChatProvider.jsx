@@ -47,11 +47,12 @@ const ChatProvider = ({children}) =>{
           }
     }
 
-    // const submitMensajes = async mensaje =>{
-    //     const mensajesActualizados = [...mensajes]
-    //     mensajesActualizados = [...mensajesActualizados,mensaje]
-    //     setMensajes(mensajesActualizados)
-    // }
+    const submitMensajes = async mensaje =>{
+        // const mensajesActualizados = [...mensajes]
+        // mensajesActualizados = [...mensajesActualizados,mensaje]
+        // setMensajes(mensajesActualizados)
+        await obtenerMensajes(chat._id)
+    }
 
     return(
         <ChatContext.Provider
@@ -62,7 +63,7 @@ const ChatProvider = ({children}) =>{
                 chat,
                 setChat,
                 crearChat,
-                // submitMensajes
+                submitMensajes
             }}
         >
             {children}
