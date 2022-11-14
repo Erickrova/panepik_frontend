@@ -46,9 +46,9 @@ const ListarMensajes = () => {
                 }
                 if(chat._id){
                     const {data} = await clienteAxios.post(`/chat/${chat?._id}`,{mensaje},config)
+                    socket.emit("enviar mensaje",{chat:chat._id,mensaje:data})
                     setMensaje("")
                     setAlerta(false)
-                    socket.emit("enviar mensaje",{chat:chat._id,mensaje:data})
                     setDelayBtn(false)
                 }
             } catch (error) {
@@ -80,6 +80,8 @@ const ListarMensajes = () => {
     }
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
+    },[])
+    useEffect(()=>{
         socket.on("enviando mensaje",data =>{
             submitMensajes(data)
         })   
