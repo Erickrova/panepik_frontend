@@ -62,7 +62,7 @@ const ChatProvider = ({children}) =>{
                 chat,
                 setChat,
                 crearChat,
-                submitMensajes
+                // submitMensajes
             }}
         >
             {children}
