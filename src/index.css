@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: #f1f1f1;
+  }
+}
+.bg-lgbt{
+  background: rgb(222,0,11);
+  background: linear-gradient(180deg, rgba(222,0,11,1) 0%, rgba(222,0,11,1) 16%, rgba(250,140,0,1) 18%, rgba(250,140,0,1) 32%, rgba(253,240,0,1) 34%, rgba(253,240,0,1) 48%, rgba(31,131,36,1) 50%, rgba(31,131,36,1) 64%, rgba(15,58,255,1) 66%, rgba(15,58,255,1) 80%, rgba(116,0,138,1) 82%);
+}
