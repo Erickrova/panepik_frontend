@@ -1,4 +1,3 @@
-import React from 'react'
 import formatearFecha from '../helpers/formatearFecha'
 import useUsuario from '../hooks/useUsuario'
 

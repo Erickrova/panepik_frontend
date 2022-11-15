@@ -2,10 +2,11 @@ import { useState } from 'react'
 import clienteAxios from '../config/clienteAxios'
 import useChat from '../hooks/useChat'
 import useUsuario from '../hooks/useUsuario'
-import Mensajes from './Mensajes'
 import io from "socket.io-client"
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Mensaje from './Mensaje'
+import Mensajes from './Mensajes'
 
 let socket;
 
@@ -14,7 +15,7 @@ const ListarMensajes = () => {
     const [mensaje,setMensaje] = useState("")
     const [alerta,setAlerta] = useState(false)
     const [delayBtn,setDelayBtn] = useState(false)
-    const {mensajes,chat,submitMensajes,setMensajes} = useChat()
+    const {chat,submitMensajes,mensajes} = useChat()
     const {perfil} = useUsuario()
     const amigo = chat?.participantes?.filter(participante => participante?._id !== perfil?._id)[0]
     const navigate = useNavigate()
@@ -54,26 +55,12 @@ const ListarMensajes = () => {
         }
     }    
     const handleAbajo = () =>{
-        const scrol = document.querySelector("#bajarscroll")
-        const hasta = document.querySelector("#bajar")
-        function getOffset( el ) {
-        let _y = 0;
-        while( el && !isNaN( el.offsetTop ) ) {
-                _y += el.offsetTop - el.scrollTop;
-                el = el.offsetParent;
-        }
-        return { top: _y};
-      }
-      let y = getOffset( hasta ).top;
-        if(y){
-            scrol.scrollTop = y 
-        }
     }
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
         socket.emit("abrir chat",chat._id)
         socket.on("conectado a sala",()=>{
-            handleAbajo()
+   
         })
         socket.on("enviando mensaje",data =>{
             if(data.chat === chat._id){
@@ -81,6 +68,13 @@ const ListarMensajes = () => {
             }
         })   
     })
+    useEffect(()=>{
+        const scrol = document.querySelector("#bajarscroll")
+        if(scrol){
+            scrol.scrollTo(0,scrol.scrollHeight) 
+        }
+
+    },[mensajes])
 
    
   return (
@@ -95,7 +89,7 @@ const ListarMensajes = () => {
      </div>
     {chat?._id ? (
         <>
-        <Mensajes mensajes={mensajes} />
+      <Mensajes />
         <div className="h-30 p-4 bg-slate-700 flex flex-col md:flex-row gap-2 items-center justify-center w-full" >
             <textarea 
             value={mensaje}

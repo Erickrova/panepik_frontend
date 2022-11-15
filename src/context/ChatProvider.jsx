@@ -49,8 +49,6 @@ const ChatProvider = ({children}) =>{
 
     const submitMensajes = mensaje =>{
         setMensajes([...mensajes,mensaje])
-        console.log(mensajes)
-        // await obtenerMensajes(chat._id)
     }
 
     return(
