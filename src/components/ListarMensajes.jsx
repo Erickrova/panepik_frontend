@@ -2,11 +2,10 @@ import { useState } from 'react'
 import clienteAxios from '../config/clienteAxios'
 import useChat from '../hooks/useChat'
 import useUsuario from '../hooks/useUsuario'
+import Mensajes from './Mensajes'
 import io from "socket.io-client"
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Mensaje from './Mensaje'
-import Mensajes from './Mensajes'
 
 let socket;
 
@@ -15,13 +14,15 @@ const ListarMensajes = () => {
     const [mensaje,setMensaje] = useState("")
     const [alerta,setAlerta] = useState(false)
     const [delayBtn,setDelayBtn] = useState(false)
-    const {chat,submitMensajes,mensajes,setMensajes} = useChat()
+    const {mensajes,chat,submitMensajes,setMensajes} = useChat()
     const {perfil} = useUsuario()
     const amigo = chat?.participantes?.filter(participante => participante?._id !== perfil?._id)[0]
     const navigate = useNavigate()
+
     const handleClickAmigo = () =>{
         navigate(`/home/perfil/${amigo.nombre}/${amigo.codigo}`)
     }
+
     const enviarMensaje = async () =>{
         if(![mensaje].includes("")){
             setDelayBtn(true)
@@ -44,9 +45,8 @@ const ListarMensajes = () => {
                 }
                 if(chat._id){
                     const {data} = await clienteAxios.post(`/chat/${chat?._id}`,{mensaje},config)
-                    const mensajesState = [...mensajes]
-                    mensajesState.push(data)
-                    setMensajes(mensajesState)
+                    let mensajesActualizados = [...mensajes,data]
+                    setMensajes(mensajesActualizados)
                     socket.emit("enviar mensaje",data)
                     setMensaje("")
                     setAlerta(false)
@@ -58,29 +58,26 @@ const ListarMensajes = () => {
         }
     }    
     const handleAbajo = () =>{
+        const scrol = document.querySelector("#bajarscroll")
+        if(scrol){
+            scrol.scrollTo(0,scrol.scrollHeight)
+        }
+        
     }
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
+    },[])
+    useEffect(()=>{
         socket.emit("abrir chat",chat._id)
         socket.on("conectado a sala",()=>{
-   
+            handleAbajo()
         })
+    },[mensajes])
+    useEffect(()=>{
         socket.on("enviando mensaje",data =>{
-            if(data.chat === chat._id && data.enviadopor._id !== perfil){
-                const mensajesState = [...mensajes]
-                mensajesState.push(data)
-                setMensajes(mensajesState)
-            }
+            submitMensajes(data)
         })   
     })
-    useEffect(()=>{
-        const scrol = document.querySelector("#bajarscroll")
-        if(scrol){
-            scrol.scrollTo(0,scrol.scrollHeight) 
-        }
-
-    },[mensajes])
-
    
   return (
      <div className="md:w-2/3 flex flex-col h-full relative  bg-slate-700">
@@ -94,7 +91,7 @@ const ListarMensajes = () => {
      </div>
     {chat?._id ? (
         <>
-      <Mensajes />
+        <Mensajes mensajes={mensajes} />
         <div className="h-30 p-4 bg-slate-700 flex flex-col md:flex-row gap-2 items-center justify-center w-full" >
             <textarea 
             value={mensaje}

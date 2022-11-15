@@ -1,10 +1,11 @@
+import { useEffect } from 'react'
 import useChat from '../hooks/useChat'
 import Mensaje from './Mensaje'
 
 const Mensajes = () => {
    const {mensajes} = useChat()
   return (
-    <div id="bajarscroll" className="overflow-y-scroll  overflow-x-hidden h-full flex flex-col mt-4 p-2 ">
+    <div id="bajarscroll" className="overflow-y-scroll overflow-hidden  overflow-x-hidden h-full flex flex-col mt-4 p-2 ">
     {mensajes?.length ? (
         mensajes.map(mensaje => (
         <Mensaje key={mensaje?._id} mensaje={mensaje} />))
