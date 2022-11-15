@@ -44,6 +44,9 @@ const ListarMensajes = () => {
                 }
                 if(chat._id){
                     const {data} = await clienteAxios.post(`/chat/${chat?._id}`,{mensaje},config)
+                    const mensajesState = [...mensajes]
+                    mensajesState.push(data)
+                    setMensajes(mensajesState)
                     socket.emit("enviar mensaje",data)
                     setMensaje("")
                     setAlerta(false)
@@ -63,7 +66,11 @@ const ListarMensajes = () => {
    
         })
         socket.on("enviando mensaje",data =>{
-            submitMensajes(data)
+            if(data.chat === chat._id && data.enviadopor._id !== perfil){
+                const mensajesState = [...mensajes]
+                mensajesState.push(data)
+                setMensajes(mensajesState)
+            }
         })   
     })
     useEffect(()=>{
