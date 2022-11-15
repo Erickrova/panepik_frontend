@@ -66,8 +66,6 @@ const ListarMensajes = () => {
     }
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
-    },[])
-    useEffect(()=>{
         socket.emit("abrir chat",chat._id)
         socket.on("conectado a sala",()=>{
             handleAbajo()
