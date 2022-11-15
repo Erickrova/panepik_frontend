@@ -12,18 +12,15 @@ let socket;
 const ListarMensajes = () => {
 
     const [mensaje,setMensaje] = useState("")
-    const [p,setP] = useState(0)
     const [alerta,setAlerta] = useState(false)
     const [delayBtn,setDelayBtn] = useState(false)
     const {mensajes,chat,submitMensajes,setMensajes} = useChat()
     const {perfil} = useUsuario()
     const amigo = chat?.participantes?.filter(participante => participante?._id !== perfil?._id)[0]
     const navigate = useNavigate()
-
     const handleClickAmigo = () =>{
         navigate(`/home/perfil/${amigo.nombre}/${amigo.codigo}`)
     }
-
     const enviarMensaje = async () =>{
         if(![mensaje].includes("")){
             setDelayBtn(true)
@@ -46,9 +43,7 @@ const ListarMensajes = () => {
                 }
                 if(chat._id){
                     const {data} = await clienteAxios.post(`/chat/${chat?._id}`,{mensaje},config)
-                    let mensajesActualizados = [...mensajes,data]
-                    setMensajes(mensajesActualizados)
-                    socket.emit("enviar mensaje",{chat:chat._id,mensaje:data})
+                    socket.emit("enviar mensaje",data)
                     setMensaje("")
                     setAlerta(false)
                     setDelayBtn(false)
@@ -70,33 +65,23 @@ const ListarMensajes = () => {
         return { top: _y};
       }
       let y = getOffset( hasta ).top;
-        if(y && p === 0){
+        if(y){
             scrol.scrollTop = y 
-            setP(1)
-        }else{
-            if(y && ((scrol.scrollTop * 100)/scrol.scrollHeight) > 94){
-                scrol.scrollTop = y 
-            }
         }
-        
     }
     useEffect(()=>{
         socket = io(import.meta.env.VITE_BACKEND_URL)
-    },[])
-    useEffect(()=>{
-        socket.on("enviando mensaje",data =>{
-            submitMensajes(data)
-        })   
-    })
-    useEffect(()=>{
         socket.emit("abrir chat",chat._id)
         socket.on("conectado a sala",()=>{
             handleAbajo()
         })
-    },[mensajes])
-    useEffect(()=>{
-        setP(0)
-    },[chat._id])
+        socket.on("enviando mensaje",data =>{
+            if(data.chat === chat._id){
+                submitMensajes(data)
+            }
+        })   
+    })
+
    
   return (
      <div className="md:w-2/3 flex flex-col h-full relative  bg-slate-700">

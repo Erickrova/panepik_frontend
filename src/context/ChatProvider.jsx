@@ -48,8 +48,10 @@ const ChatProvider = ({children}) =>{
     }
 
     const submitMensajes = mensaje =>{
-        let mensajesActualizados = [...mensajes,mensaje]
+        const mensajesState = [...mensajes]
+        const mensajesActualizados = [...mensajesState,mensaje]
         setMensajes(mensajesActualizados)
+        console.log(mensajes)
         // await obtenerMensajes(chat._id)
     }
 
