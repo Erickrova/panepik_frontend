@@ -8,9 +8,9 @@ import useModals from "../hooks/useModals";
 import ModalSeguidores from "../components/ModalSeguidores";
 import ModalSeguidos from "../components/ModalSeguidos";
 import useChat from "../hooks/useChat";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
-let socket;
+// let socket;
 
 const PerfilBuscado = () => {
   const [seguidor, setSeguidor] = useState(false);
@@ -52,14 +52,16 @@ const PerfilBuscado = () => {
         config
       );
       await obtenerPerfil();
-      socket.emit("dejar seguir", "estoy dejando de seguir");
+      setSeguidor(false)
+      // socket.emit("dejar seguir", "estoy dejando de seguir");
     } else {
       await clienteAxios(
         `/usuarios/seguir-usuario/${perfilBuscado._id}`,
         config
       );
       await obtenerPerfil();
-      socket.emit("seguir", "estoy seguiguiendo");
+      setSeguidor(true)
+      // socket.emit("seguir", "estoy seguiguiendo");
     }
   };
   const handleChat = async () => {
@@ -89,18 +91,19 @@ const PerfilBuscado = () => {
     };
     llamado();
   }, [itsme]);
-  useEffect(() => {
-    socket = io(import.meta.env.VITE_BACKEND_URL);
 
-    socket.on("dejando seguir", async (data) => {
-      await buscarPerfil();
-      setSeguidor(false);
-    });
-    socket.on("siguiendo", async (data) => {
-      await buscarPerfil();
-      setSeguidor(true);
-    });
-  });
+  // useEffect(() => {
+  //   socket = io(import.meta.env.VITE_BACKEND_URL);
+
+  //   socket.on("dejando seguir", async (data) => {
+  //     await buscarPerfil();
+  //     setSeguidor(false);
+  //   });
+  //   socket.on("siguiendo", async (data) => {
+  //     await buscarPerfil();
+  //     setSeguidor(true);
+  //   });
+  // });
   useEffect(() => {
     if (
       perfilBuscado?.seguidores?.some((seguidor) => seguidor._id === perfil._id)

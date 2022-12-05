@@ -1,4 +1,5 @@
 
+import { useEffect } from 'react'
 import useChat from '../hooks/useChat'
 import useUsuario from '../hooks/useUsuario'
 
@@ -12,6 +13,16 @@ const PreviewChat = ({chat}) => {
         setChat(chat)
         obtenerMensajes(id)               
     }
+    useEffect(()=>{
+        const handleAbajo = () =>{
+            const scrol = document.querySelector("#bajarscroll")
+            if(scrol){
+                scrol.scrollTo(0,scrol.scrollHeight)
+            }
+            
+        }
+        handleAbajo()
+    })
 
   return (
     <button

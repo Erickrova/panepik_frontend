@@ -2,11 +2,11 @@ import { useState } from "react"
 import clienteAxios from "../config/clienteAxios"
 import useModals from "../hooks/useModals"
 import Alerta from "./Alerta"
-import io from "socket.io-client"
 import { useEffect } from "react"
 import useUsuario from "../hooks/useUsuario"
 
-let socket
+// import io from "socket.io-client"
+// let socket
 
 
 
@@ -75,9 +75,9 @@ const FormularioCrearPublicacion = () => {
     
     const {msg} = alerta
     
-    useEffect(()=>{
-        socket = io(import.meta.env.VITE_BACKEND_URL)       
-    },[])
+    // useEffect(()=>{
+    //     socket = io(import.meta.env.VITE_BACKEND_URL)       
+    // },[])
     return (
         modalCrearPublicacion ? (
         <div

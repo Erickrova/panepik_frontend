@@ -3,11 +3,11 @@ import clienteAxios from '../config/clienteAxios'
 import useChat from '../hooks/useChat'
 import useUsuario from '../hooks/useUsuario'
 import Mensajes from './Mensajes'
-import io from "socket.io-client"
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-let socket;
+// import io from "socket.io-client"
+// let socket;
 
 const ListarMensajes = () => {
 
@@ -47,10 +47,11 @@ const ListarMensajes = () => {
                     const {data} = await clienteAxios.post(`/chat/${chat?._id}`,{mensaje},config)
                     let mensajesActualizados = [...mensajes,data]
                     setMensajes(mensajesActualizados)
-                    socket.emit("enviar mensaje",data)
+                    // socket.emit("enviar mensaje",data)
                     setMensaje("")
                     setAlerta(false)
                     setDelayBtn(false)
+                    handleAbajo()
                 }
             } catch (error) {
                 console.log(error)
@@ -64,18 +65,18 @@ const ListarMensajes = () => {
         }
         
     }
-    useEffect(()=>{
-        socket = io(import.meta.env.VITE_BACKEND_URL)
-        socket.emit("abrir chat",chat._id)
-        socket.on("conectado a sala",()=>{
-            handleAbajo()
-        })
-    },[mensajes])
-    useEffect(()=>{
-        socket.on("enviando mensaje",data =>{
-            submitMensajes(data)
-        })   
-    })
+    // useEffect(()=>{
+    //     socket = io(import.meta.env.VITE_BACKEND_URL)
+    //     socket.emit("abrir chat",chat._id)
+    //     socket.on("conectado a sala",()=>{
+    //         handleAbajo()
+    //     })
+    // },[mensajes])
+    // useEffect(()=>{
+    //     socket.on("enviando mensaje",data =>{
+    //         submitMensajes(data)
+    //     })   
+    // })
    
   return (
      <div className="md:w-2/3 flex flex-col h-full relative  bg-slate-700">
